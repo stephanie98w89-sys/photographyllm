@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>街頭與日常攝影入門指南｜LLM Wiki 教學簡報</title>
+  <style>
+    :root {
+      --bg-dark: #121316;
+      --card-bg: #1c1e24;
+      --card-border: #2e323d;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #f59e0b;
+      --accent-soft: rgba(245, 158, 11, 0.14);
+      --blue: #38bdf8;
+      --green: #34d399;
+      --rose: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: #23262f;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #fbbf24);
+      width: 11.11%;
+      transition: width 0.35s ease;
+    }
+
+    .slides-wrapper {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 24px 84px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      max-height: 680px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px 48px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .wiki-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 5px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+    }
+
+    .step-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    h1 {
+      font-size: 2.45rem;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 1.85rem;
+      line-height: 1.3;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      font-size: 1.12rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin: 12px 0;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 12px 0;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 10px 0;
+    }
+
+    .box {
+      background: #242730;
+      border: 1px solid #323744;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .box h3 {
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .box p, .box li {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: #d1d5db;
+    }
+
+    .box ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .box li {
+      margin-bottom: 6px;
+    }
+
+    .analogy-banner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(56, 189, 248, 0.1));
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 0.94rem;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid #323744;
+      line-height: 1.5;
+    }
+
+    th {
+      background: #252832;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .tag-bright { background: rgba(52, 211, 153, 0.16); color: var(--green); }
+    .tag-warn { background: rgba(251, 113, 133, 0.16); color: var(--rose); }
+
+    .slide-footer {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid #2b2f3a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .controls {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(28, 30, 36, 0.96);
+      border: 1px solid var(--card-border);
+      padding: 8px 18px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+    }
+
+    .btn {
+      background: #2a2e39;
+      color: var(--text-main);
+      border: 1px solid #3c4150;
+      padding: 8px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent);
+      color: #111;
+      border-color: var(--accent);
+    }
+
+    .btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .page-indicator {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      min-width: 65px;
+      text-align: center;
+    }
+
+    .cover-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      padding: 12px 0;
+    }
+
+    .cover-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      background: #252832;
+      border: 1px solid #363b49;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 24px 20px; max-height: none; }
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.4rem; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <main class="slides-wrapper">
+
+    <!-- Slide 1 -->
+    <section class="slide active">
+      <div class="slide-header">
+        <span class="wiki-badge">LLM Wiki 教學簡報｜零基礎攝影入門</span>
+        <span class="step-label">知識庫驅動生成</span>
+      </div>
+      <div class="cover-content">
+        <h1>街頭與日常攝影入門指南：<br><span style="color: var(--accent);">從曝光原理到手機實戰</span></h1>
+        <p class="subtitle">
+          沒買過單眼、看不懂相機參數也沒關係！這份簡報將用最白話的生活比喻，帶你從「光線如何成像」開始，一步步學會挑選器材、觀察街頭光影，並用手邊的手機拍出有故事感的照片。
+        </p>
+        <div class="cover-pills">
+          <span class="pill">01. 曝光三要素</span>
+          <span class="pill">02. 相機設備入門</span>
+          <span class="pill">03. 什麼是街拍</span>
+          <span class="pill">04. 黑白攝影美學</span>
+          <span class="pill">05. 手機攝影技巧</span>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>資料來源：街頭與日常攝影 LLM Wiki（5 篇知識詞條）</span>
+        <span>點擊下方「下一頁」或按鍵盤 → 翻頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">課程導覽｜知識架構總覽</span>
+          <span class="step-label">為什麼照這個順序學？</span>
+        </div>
+        <h2>零基礎新手的 4 階段學習地圖</h2>
+        <p class="subtitle">拍照不是背誦複雜規格，而是先懂「控制光線」，再學會「用眼睛觀察」。</p>
+        <div class="grid-2">
+          <div class="box">
+            <h3>第一站：控制畫面明暗（Wiki 01）</h3>
+            <p>搞懂相機最核心的<strong>光圈、快門、ISO</strong>，知道照片為什麼會太暗、太亮，或不小心拍模糊。</p>
+          </div>
+          <div class="box">
+            <h3>第二站：認識手中工具（Wiki 02）</h3>
+            <p>分清楚微單眼與單眼的差別，看懂<strong>感光元件大小與鏡頭焦段</strong>，不再被規格表嚇到。</p>
+          </div>
+          <div class="box">
+            <h3>第三站：培養攝影眼（Wiki 03 & 04）</h3>
+            <p>走上街頭學習觀察<strong>環境、時間與光線</strong>，並學會抽掉色彩，用<strong>黑白對比</strong>說故事。</p>
+          </div>
+          <div class="box">
+            <h3>第四站：隨時隨地開拍（Wiki 05）</h3>
+            <p>沒有相機也能拍！用手機<strong>鎖定對焦、手動調光與物理距離</strong>，拍出自然淺景深。</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>對應知識庫：[[01-exposure]] ~ [[05-mobile-photography]]</span>
+        <span>第 2 / 9 頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">來源：Wiki 01｜曝光三要素</span>
+          <span class="step-label">核心觀念 (1/2)</span>
+        </div>
+        <h2>什麼是「曝光」？用畫畫一秒看懂！</h2>
+        <div class="analogy-banner">
+          <strong>生活化比喻（繪圖比喻法）：</strong><br>
+          拍照就像在畫紙上作畫——<strong>「光線」是顏料，「相機感光元件」是畫紙</strong>。要畫出顏色剛好的圖，全靠三個開關互相配合：
+        </div>
+        <div class="grid-3">
+          <div class="box">
+            <h3>1. 光圈 ＝ 畫筆粗細</h3>
+            <p>鏡頭裡控制進光孔大小的葉片。</p>
+            <ul>
+              <li><strong>光圈越大（f/ 數字越小）</strong>：畫筆越粗，一次塗上去的顏料越多，<strong>照片越亮</strong>。</li>
+              <li>常見數值：<code>f/1.4</code>（大）→ <code>f/8</code>（小）</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>2. 快門 ＝ 上色時間</h3>
+            <p>快門簾打開讓光線照進來的時間。</p>
+            <ul>
+              <li><strong>快門越長（如 1/30 秒）</strong>：塗抹時間越久，進光越多，<strong>照片越亮</strong>。</li>
+              <li><strong>快門越短（如 1/1000 秒）</strong>：瞬間關閉，<strong>照片越暗</strong>。</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>3. ISO ＝ 畫紙材質</h3>
+            <p>感光元件對光線的敏感程度。</p>
+            <ul>
+              <li><strong>ISO 越高（如 ISO 1600）</strong>：畫紙越容易吃色，一點光就很顯色，<strong>照片越亮</strong>。</li>
+              <li><strong>ISO 越低（如 ISO 100）</strong>：對光較不敏感，<strong>照片越暗</strong>。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>資料溯源：wiki/01-exposure.md（Tim Ting Photography 繪圖比喻法）</span>
+        <span>第 3 / 9 頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">來源：Wiki 01｜曝光三要素</span>
+          <span class="step-label">核心觀念 (2/2)</span>
+        </div>
+        <h2>三個開關都能調亮，差別在哪？（副作用對照）</h2>
+        <p class="subtitle">這三者就像蹺蹺板，調亮畫面的同時，各自會帶來不同的「畫面效果與代價」：</p>
+        <table>
+          <thead>
+            <tr>
+              <th>控制要素</th>
+              <th>如何讓照片變亮？</th>
+              <th>伴隨的畫面效果（優點）</th>
+              <th>需要注意的代價（避坑）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>光圈 (Aperture)</strong></td>
+              <td>調大開孔<br><span class="tag tag-bright">f/ 數字變小 (如 f/2.8)</span></td>
+              <td><strong>景深變淺</strong>：主角清晰、背景模糊（夢幻散景）。</td>
+              <td><span class="tag tag-warn">清晰範圍變窄</span> 拍大合照或風景時，後面的人容易變模糊。</td>
+            </tr>
+            <tr>
+              <td><strong>快門 (Shutter)</strong></td>
+              <td>放慢速度<br><span class="tag tag-bright">秒數變長 (如 1/15s)</span></td>
+              <td><strong>動作連續感</strong>：能拍出流水絲綢感或車流光軌。</td>
+              <td><span class="tag tag-warn">容易手震模糊</span> 手持低於安全快門（約 1/30s）易晃動，需上腳架。</td>
+            </tr>
+            <tr>
+              <td><strong>感光度 (ISO)</strong></td>
+              <td>提高數值<br><span class="tag tag-bright">數字變大 (如 ISO 3200)</span></td>
+              <td><strong>微光救星</strong>：夜晚不開閃光燈也能拍出清楚亮度。</td>
+              <td><span class="tag tag-warn">噪點 (Noise) 增加</span> 畫面會出現粗糙顆粒與彩色雜訊，畫質下降。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="slide-footer">
+        <span>新手口訣：寧可調高 ISO 忍受一點顆粒，也不要快門太慢拍出整張手震模糊！</span>
+        <span>第 4 / 9 頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">來源：Wiki 02｜相機設備入門</span>
+          <span class="step-label">硬體選擇指南</span>
+        </div>
+        <h2>第一次買相機怎麼挑？先看懂這 3 件事</h2>
+        <div class="grid-3">
+          <div class="box">
+            <h3>1. 機身選「無反光鏡」</h3>
+            <p>拿掉了傳統單眼的反光鏡結構，體積更輕巧。</p>
+            <ul>
+              <li><strong>最大優點</strong>：觀景窗與螢幕能<strong>即時預覽曝光明暗</strong>，對新手最友善。</li>
+              <li>想換鏡頭玩不同視角，選「可更換鏡頭機型」。</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>2. 感光元件決定體積與夜拍</h3>
+            <p>元件越大，夜拍雜訊越少、背景越容易模糊：</p>
+            <ul>
+              <li><strong>M4/3</strong>：最輕巧迷你，適合旅行登山。</li>
+              <li><strong>APS-C</strong>：重量與畫質的最佳平衡（街拍首選）。</li>
+              <li><strong>全片幅</strong>：夜拍最強、散景最美，但機身較重。</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>3. 鏡頭焦段決定視野</h3>
+            <p>數字越小拍得越廣，數字越大拍得越遠：</p>
+            <ul>
+              <li><strong>廣角 (12–35mm)</strong>：街景建築、大景。</li>
+              <li><strong>標準 (40–65mm)</strong>：接近人眼專注視角。</li>
+              <li><strong>長焦 (80mm+)</strong>：遠距特寫、壓縮背景。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="analogy-banner" style="margin-top: 12px; margin-bottom: 0;">
+          <strong>新手避坑提醒：</strong>不用盲目追求超高「百萬像素」（一般 2000 萬畫素已非常夠用），反而是<strong>機身防手震（IBIS）</strong>與實體握感更值得親自到店試拿！
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>資料溯源：wiki/02-camera-gear.md（GQ Taiwan / WIRED 相機入門指南）</span>
+        <span>第 5 / 9 頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">來源：Wiki 03｜什麼是街拍</span>
+          <span class="step-label">觀察力與構圖策略</span>
+        </div>
+        <h2>街頭攝影：不只是路邊隨手按快門</h2>
+        <p class="subtitle">街拍的核心是透過「觀察」記錄城市的人文日常。出門前先掌握三大觀察維度與兩種構圖招式：</p>
+        <div class="grid-2">
+          <div class="box">
+            <h3>出發前的三大觀察維度</h3>
+            <ul>
+              <li><strong>環境特色</strong>：留意老城區廟宇、傳統店家或夜市等能代表當地文化的物件。</li>
+              <li><strong>時間變化</strong>：同一地點不同時段故事完全不同（如寺廟平日求籤 vs 下午四點晚課誦經）。</li>
+              <li><strong>天氣與光線</strong>：<strong>陰天</strong>光線柔和，適合拍「人物神態」；<strong>晴天</strong>（尤其冬季斜射光）適合拍建築間的「光影線條」。</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>兩種經典街拍構圖策略</h3>
+            <ul>
+              <li><strong>1. 先構好圖再等待（守株待兔）</strong>：<br>先找到好看的階梯線條或光影框景，把相機架好，耐心等待路人走進最佳位置再按快門。</li>
+              <li><strong>2. 瞬間抓拍（一閃即逝）</strong>：<br>遇到突發趣味事件時，快門設 <code>1/250s</code> 以上優先拍到瞬間，事後再透過適度<strong>裁切（Crop）</strong>去掉邊緣雜物。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>資料溯源：wiki/03-street-photography.md（Sony 數位教室 feat. Jerry）</span>
+        <span>第 6 / 9 頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 7 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">來源：Wiki 04｜黑白攝影美學</span>
+          <span class="step-label">做減法的視覺藝術</span>
+        </div>
+        <h2>抽掉顏色之後，照片靠什麼吸引人？</h2>
+        <p class="subtitle">當街頭招牌或路人衣服顏色太雜亂時，轉成黑白能讓觀眾瞬間專注於「光影、結構與情緒」：</p>
+        <div class="grid-4">
+          <div class="box">
+            <h3>1. 構圖與「負空間」</h3>
+            <p>善用大面積留白（如空白牆面、晴空）襯托單一人物或物件，營造簡約典雅的呼吸感。</p>
+          </div>
+          <div class="box">
+            <h3>2. 形狀與「側光影子」</h3>
+            <p>利用側光投射出的長影子，勾勒物體的立體輪廓與剪影（如逆光亮背景前的深色人物）。</p>
+          </div>
+          <div class="box">
+            <h3>3. 質感對比</h3>
+            <p>粗糙表面在黑白下會轉為細膩灰階（如裂紋樹皮、凹凸石子路對比光滑玻璃牆面）。</p>
+          </div>
+          <div class="box">
+            <h3>4. 重複的幾何圖案</h3>
+            <p>地面石塊、建築樑柱或階梯的規律排列，拿掉色彩干擾後會變得格外醒目。</p>
+          </div>
+        </div>
+        <div class="analogy-banner" style="margin-top: 10px; margin-bottom: 0;">
+          <strong>黑白曝光小秘訣：</strong>拍攝黑白時可刻意<strong>減少曝光（欠曝）</strong>讓陰影更深沉有戲劇張力，並維持<strong>低 ISO</strong> 避免暗部出現粗糙雜訊。
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>資料溯源：wiki/04-black-and-white.md（Nikon Hong Kong 黑白攝影昇華指南）</span>
+        <span>第 7 / 9 頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">來源：Wiki 05｜手機攝影技巧</span>
+          <span class="step-label">零器材門檻實戰</span>
+        </div>
+        <h2>沒有相機？用手機拍出大片感的 4 個動作</h2>
+        <p class="subtitle">手機光圈固定、預設全自動，只要學會「手動介入」與「利用物理距離」，就能突破硬體限制：</p>
+        <div class="grid-2">
+          <div class="box">
+            <h3>動作 1 & 2：拍攝前先做這兩步</h3>
+            <ul>
+              <li><strong>擦拭鏡頭</strong>：手機常放口袋沾滿指紋油污，按下快門前用衣角輕擦，畫面立刻變通透。</li>
+              <li><strong>開啟 3×3 九宮格線</strong>：對齊建築垂直線與地平線，並將主角放在格線交叉點（三分法構圖）。</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>動作 3：長按鎖定對焦 ＋ 手動調光</h3>
+            <ul>
+              <li>輕點主角後<strong>長按螢幕（AF-Lock）</strong>，避免手機亂跑焦。</li>
+              <li>遇到逆光或雪地時，上下滑動小太陽圖示（或調 <code>+/- EV</code>）手動修正過亮或過暗。</li>
+            </ul>
+          </div>
+          <div class="box" style="grid-column: 1 / -1;">
+            <h3>動作 4：不靠修圖，用「物理距離」拍出自然淺景深</h3>
+            <p>一般手機無法調大實體光圈，想拍出「主角清晰、背景模糊」的效果，只要記住黃金法則：<strong>「手機盡量貼近主角，同時讓主角與背景距離越遠越好」</strong>！另外也可利用手機輕薄優勢，貼近地面或伸出欄杆尋找獨特低角度。</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>資料溯源：wiki/05-mobile-photography.md（Fotobeginner 手機攝影技巧）</span>
+        <span>第 8 / 9 頁</span>
+      </div>
+    </section>
+
+    <!-- Slide 9 -->
+    <section class="slide">
+      <div>
+        <div class="slide-header">
+          <span class="wiki-badge">課程總結｜行動檢查清單</span>
+          <span class="step-label">知識庫溯源總表</span>
+        </div>
+        <h2>今天出門拍照前，記得這 5 件事！</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h3>隨身 30 秒實戰清單</h3>
+            <ul>
+              <li><strong>鏡頭擦乾淨了嗎？</strong>（排除油污霧氣）</li>
+              <li><strong>開啟九宮格線了嗎？</strong>（保持水平與三分構圖）</li>
+              <li><strong>光線太暗或太亮嗎？</strong>（手動調曝光補償 EV 或光圈快門）</li>
+              <li><strong>快門夠快不手震嗎？</strong>（街拍抓拍建議 1/250s 以上）</li>
+              <li><strong>顏色太雜亂嗎？</strong>（試試轉成黑白，專注光影與幾何線條）</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>本簡報對應之 LLM Wiki 知識庫</h3>
+            <ul>
+              <li><code>01-exposure.md</code>：曝光三要素與繪圖比喻法</li>
+              <li><code>02-camera-gear.md</code>：無反光鏡、感光元件與鏡頭分類</li>
+              <li><code>03-street-photography.md</code>：街拍三大觀察與兩種構圖</li>
+              <li><code>04-black-and-white.md</code>：黑白對比與四大無色視覺元素</li>
+              <li><code>05-mobile-photography.md</code>：手機鎖定對焦與物理淺景深</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>感謝閱讀！現在就拿起手機或相機，去捕捉屬於你的街頭故事吧。</span>
+        <span>第 9 / 9 頁（完結）</span>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="controls">
+    <button type="button" class="btn" id="prevBtn">← 上一頁</button>
+    <span class="page-indicator" id="pageIndicator">1 / 9</span>
+    <button type="button" class="btn" id="nextBtn">下一頁 →</button>
+  </nav>
+
+  <script>
+    (function() {
+      var slides = document.querySelectorAll('.slide');
+      var progressBar = document.getElementById('progressBar');
+      var pageIndicator = document.getElementById('pageIndicator');
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      var currentSlide = 0;
+
+      function updateSlide() {
+        for (var i = 0; i < slides.length; i++) {
+          if (i === currentSlide) {
+            slides[i].classList.add('active');
+          } else {
+            slides[i].classList.remove('active');
+          }
+        }
+        var total = slides.length;
+        progressBar.style.width = (((currentSlide + 1) / total) * 100) + '%';
+        pageIndicator.textContent = (currentSlide + 1) + ' / ' + total;
+        prevBtn.disabled = (currentSlide === 0);
+        nextBtn.disabled = (currentSlide === total - 1);
+      }
+
+      function changeSlide(dir) {
+        var nextIndex = currentSlide + dir;
+        if (nextIndex >= 0 && nextIndex < slides.length) {
+          currentSlide = nextIndex;
+          updateSlide();
+        }
+      }
+
+      prevBtn.addEventListener('click', function() { changeSlide(-1); });
+      nextBtn.addEventListener('click', function() { changeSlide(1); });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.keyCode === 39 || e.keyCode === 32) {
+          e.preventDefault();
+          changeSlide(1);
+        } else if (e.key === 'ArrowLeft' || e.keyCode === 37) {
+          e.preventDefault();
+          changeSlide(-1);
+        }
+      });
+
+      updateSlide();
+    })();
+  </script>
+</body>
+</html>
